@@ -1,6 +1,10 @@
 # ontology-test-standalone
 ontology neovm smart contract test project
 
+## Run the test
+```go run main.go <params>``` or 
+```go build``` and run ```./ontology-test-standalone <params>```
+
 ## Usage
 run parameters:
 
