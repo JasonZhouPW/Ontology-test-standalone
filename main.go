@@ -4,51 +4,50 @@ import (
 	"fmt"
 	sdk "github.com/ontio/ontology-go-sdk"
 
+	"flag"
 	"github.com/ontio/ontology-go-sdk/utils"
 	"github.com/ontio/ontology/common"
+	"io/ioutil"
 	"math"
 	"time"
-	"flag"
-	"io/ioutil"
 )
 
-var(
-	walletFile  string
-	pwd string
-	acct2 string
-	codefile string
-	skipinit bool
+var (
+	walletFile string
+	pwd        string
+	acct2      string
+	codefile   string
+	skipinit   bool
 )
 
-func init(){
-	flag.StringVar(&walletFile,"wallet","./wallet.dat","wallet file")
-	flag.StringVar(&pwd,"pwd","","account password")
-	flag.StringVar(&codefile,"code","./oep4.avm","oep4 file")
-	flag.StringVar(&acct2,"acct2","","account2 base58 address")
-	flag.BoolVar(&skipinit,"skipinit",false,"skip init method")
+func init() {
+	flag.StringVar(&walletFile, "wallet", "./wallet.dat", "wallet file")
+	flag.StringVar(&pwd, "pwd", "", "account password")
+	flag.StringVar(&codefile, "code", "./oep4.avm", "oep4 file")
+	flag.StringVar(&acct2, "acct2", "", "account2 base58 address")
+	flag.BoolVar(&skipinit, "skipinit", false, "skip init method")
 
 	flag.Parse()
 }
 
 func main() {
 
-	fmt.Printf("use wallet file:%s\n",walletFile)
-	if len(pwd) == 0{
+	fmt.Printf("use wallet file:%s\n", walletFile)
+	if len(pwd) == 0 {
 		fmt.Println("pwd is empty")
 		return
 	}
-	fmt.Printf("use code file:%s\n",codefile)
+	fmt.Printf("use code file:%s\n", codefile)
 	code, err := ioutil.ReadFile(codefile)
 	if err != nil {
-		fmt.Printf("load code file error:%s\n",err.Error())
+		fmt.Printf("load code file error:%s\n", err.Error())
 		return
 	}
-	fmt.Printf("acct2:%s\n",acct2)
+	fmt.Printf("acct2:%s\n", acct2)
 	if len(acct2) == 0 {
 		fmt.Printf("acct2 is empty \n")
 		return
 	}
-
 
 	fmt.Println("starting test OEP4 ")
 	ontSdk := sdk.NewOntologySdk()
@@ -419,8 +418,6 @@ func main() {
 		return
 	}
 
-
-
 	fmt.Println("========== testing approve end ==========")
 
 	fmt.Println("========== testing transferFrom -1 ==========")
@@ -431,8 +428,8 @@ func main() {
 		[]interface{}{"transferFrom", []interface{}{account2.Address[:], signer.Address[:], account2.Address[:], -1}})
 	if err == nil {
 		fmt.Println("Testing Error !!!: transferFrom -1 should failed!")
-		return	}
-
+		return
+	}
 
 	fmt.Println("========== testing transferFrom  end ==========")
 
@@ -446,7 +443,6 @@ func main() {
 		fmt.Println("Testing Error !!!: transfer MaxInt64 should failed!")
 		return
 	}
-
 
 	fmt.Println("========== testing transfer end ==========")
 	fmt.Println("========== testing approve math.MaxInt64 ==========")
@@ -470,7 +466,6 @@ func main() {
 	if err == nil {
 		fmt.Printf("invoke transferFrom InvokeNeoVMSmartContract error: %s\n", err)
 	}
-
 
 	fmt.Println("========== testing transferFrom end ==========")
 
